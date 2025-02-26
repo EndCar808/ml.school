@@ -8,6 +8,8 @@ class Introduction(FlowSpec):
     def start(self):
         """Every flow must start with a 'start' step."""
         print("Starting the flow")
+        
+        # You can trigger movement to the next step using the `next` method
         self.next(self.step_a)
 
     @step

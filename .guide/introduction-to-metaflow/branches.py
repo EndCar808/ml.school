@@ -8,6 +8,8 @@ class Branches(FlowSpec):
     def start(self):
         """Initialize the start value artifact."""
         self.start_value = 0
+        
+        # NOTE: you trigger a static branch by calling `next` with multiple steps
         self.next(self.step1, self.step2)
 
     @step
@@ -24,14 +26,23 @@ class Branches(FlowSpec):
         self.common = 2
         self.next(self.join)
 
+    # All branches must be joined at some point!!
+    # The join method (which does not need to be named "join") takes in another parameter
+    # `inputs` which is a list of all the steps that are being joined.
     @step
     def join(self, inputs):
         """Join the two branches."""
-        self.merge_artifacts(inputs, exclude=["common"])
+        # Join the steps
+        self.merge_artifacts(
+            inputs, 
+            exclude=["common"]  # specify which data artifacts to exclude from the merge -> dont merge common
+        )
 
+        # You can refer to each step in the branch by the step name
         print("Step 1's artifact value:", inputs.step1.common)
         print("Step 2's artifact value:", inputs.step2.common)
 
+        # You can also iterate over all the steps in the branch
         self.final_value = sum(i.common for i in inputs)
         self.next(self.end)
 

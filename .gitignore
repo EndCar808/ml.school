@@ -21,3 +21,8 @@ sample.json
 
 mlflow.db
 uv.lock
+
+
+slides
+slides/*
+*.pdf

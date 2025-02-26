@@ -1,0 +1,11 @@
+{
+    "folders": [
+      {
+        "path": "${workspaceFolder}"
+      }
+    ],
+    "settings": {
+      "terminal.integrated.cwd": "${workspaceFolder}",
+      "python.pythonPath": "${workspaceFolder}/venv/bin/python"
+    }
+  }

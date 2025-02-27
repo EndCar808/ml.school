@@ -33,6 +33,7 @@ class Branches(FlowSpec):
     def join(self, inputs):
         """Join the two branches."""
         # Join the steps
+        # NOTE: merge_artifacts can be used to control the flow of data artifacts between steps - see https://docs.metaflow.org/metaflow/basics#data-flow-through-the-graph
         self.merge_artifacts(
             inputs, 
             exclude=["common"]  # specify which data artifacts to exclude from the merge -> dont merge common

@@ -69,6 +69,13 @@ class Training(FlowSpec, DatasetMixin):
         help="Minimum accuracy threshold required to register the model.",
         default=0.7,
     )
+    
+    # Number of folds to use in the cross-validation process.
+    num_folds = Parameter(
+        "num-folds",
+        help="Number of folds to use in the cross-validation process.",
+        default=2,
+    )
 
     @card
     @step
@@ -107,7 +114,7 @@ class Training(FlowSpec, DatasetMixin):
 
         # We are going to use a 5-fold cross-validation process. We'll shuffle the data
         # before splitting it into batches.
-        kfold = KFold(n_splits=5, shuffle=True)
+        kfold = KFold(n_splits=self.num_folds, shuffle=True)
 
         # We can now generate the indices to split the dataset into training and test
         # sets. This will return a tuple with the fold number and the training and test
@@ -156,7 +163,8 @@ class Training(FlowSpec, DatasetMixin):
             "KERAS_BACKEND": os.getenv("KERAS_BACKEND", "torch"),
         },
     )
-    @resources(memory=4096)
+    # @resources(memory='4G')  # Originally set to 4G, but this wouldn't run on my laptop
+    @resources(memory='2G')
     @step
     def train_fold(self):
         """Train a model as part of the cross-validation process.
@@ -321,7 +329,8 @@ class Training(FlowSpec, DatasetMixin):
             "KERAS_BACKEND": os.getenv("KERAS_BACKEND", "torch"),
         },
     )
-    @resources(memory=4096)
+    # @resources(memory='4G')  # Originally set to 4G, but this wouldn't run on my laptop
+    @resources(memory='2G')
     @step
     def train(self):
         """Train the final model using the entire dataset."""
@@ -352,7 +361,8 @@ class Training(FlowSpec, DatasetMixin):
             "KERAS_BACKEND": os.getenv("KERAS_BACKEND", "torch"),
         },
     )
-    @resources(memory=4096)
+    # @resources(memory='4G')  # Originally set to 4G, but this wouldn't run on my laptop
+    @resources(memory='2G')
     @step
     def register(self, inputs):
         """Register the model in the model registry.
